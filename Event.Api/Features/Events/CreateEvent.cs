@@ -44,13 +44,9 @@ public static class CreateEvent
                     validationResult.ToString()));
             }
 
-            var eventEntity = new Entities.Event()
-            {
-                EventId = request.EventId
-            };
+            Entities.Event? eventEntity = default;
             
-            _dbContext.Add(eventEntity);
-
+            await _dbContext.AddAsync(eventEntity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return eventEntity.EventId;

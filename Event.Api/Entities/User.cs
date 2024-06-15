@@ -5,7 +5,8 @@ namespace Event.Api.Entities;
 
 public class User
 {
-    public User(Guid userId, string email, string password, string cryptKey, List<Interest> interests, Phone phone, Person person, Company company, UserAddress userAddress)
+    public User(Guid userId, string email, string password, string cryptKey, List<Interest> interests, Phone phone,
+        Person person, Company company, UserAddress userAddress)
     {
         UserId = userId;
         Email = email;
@@ -48,7 +49,6 @@ public class Phone
     public string Value { get; set; }
 
     // Nav Properties
-    [ForeignKey("UserId")]
     public User User { get; set; }
 }
 
@@ -70,7 +70,6 @@ public class Interest
     public string Value { get; set; }
 
     // Nav Properties
-    [ForeignKey("UserId")]
     public User User { get; set; }
 }
 
@@ -88,9 +87,7 @@ public class UserAddress
     public Guid AddressId { get; set; }
 
     // Nav Properties
-    [ForeignKey("UserId")]
     public User User { get; set; }
-    [ForeignKey("AddressId")]
     public Address Address { get; set; }
 }
 
@@ -141,7 +138,6 @@ public class Person
     public DateTime Birthdate { get; set; }
 
     // Nav Properties
-    [ForeignKey("UserId")]
     public User User { get; set; }
 }
 
@@ -166,6 +162,5 @@ public class Company
     public string Specialization { get; set; }
 
     // Nav Properties
-    [ForeignKey("UserId")]
     public User User { get; set; }
 }
