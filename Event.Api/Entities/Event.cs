@@ -1,232 +1,171 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Event.Api.Entities;
 
-public class Event
+public class Event(
+    Guid eventId,
+    Guid userOwnerId,
+    string name,
+    string description,
+    DateTime startDate,
+    DateTime endDate,
+    int eventTypeId,
+    int targetId,
+    EventType eventType,
+    Target target,
+    ICollection<Tag> tags,
+    ICollection<Sponsor> sponsors,
+    ICollection<EventSpace> eventSpaces,
+    ICollection<EventParameter> eventParameters,
+    ICollection<EventParticipant> eventParticipants)
 {
-    public Event(Guid eventId, Guid userOwnerId, string name, string description, DateTime startDate, DateTime endDate,
-        int eventTypeId, int targetId, EventType eventType, Target target, ICollection<Tag> tags,
-        ICollection<Sponsor> sponsors, ICollection<EventSpace> eventSpaces, ICollection<EventParameter> eventParameters,
-        ICollection<EventParticipant> eventParticipants)
-    {
-        EventId = eventId;
-        UserOwnerId = userOwnerId;
-        Name = name;
-        Description = description;
-        StartDate = startDate;
-        EndDate = endDate;
-        EventTypeId = eventTypeId;
-        TargetId = targetId;
-        EventType = eventType;
-        Target = target;
-        Tags = tags;
-        Sponsors = sponsors;
-        EventSpaces = eventSpaces;
-        EventParameters = eventParameters;
-        EventParticipants = eventParticipants;
-    }
-
     [Key]
-    public Guid EventId { get; set; }
-    public Guid UserOwnerId { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public int EventTypeId { get; set; }
-    public int TargetId { get; set; }
+    public Guid EventId { get; set; } = eventId;
+
+    public Guid UserOwnerId { get; set; } = userOwnerId;
+    public string Name { get; set; } = name;
+    public string Description { get; set; } = description;
+    public DateTime StartDate { get; set; } = startDate;
+    public DateTime EndDate { get; set; } = endDate;
+    public int EventTypeId { get; set; } = eventTypeId;
+    public int TargetId { get; set; } = targetId;
 
     // Nav Properties
-    public EventType EventType { get; set; }
-    public Target Target { get; set; }
-    public ICollection<Tag> Tags { get; set; }
-    public ICollection<Sponsor> Sponsors { get; set; }
-    public ICollection<EventSpace> EventSpaces { get; set; }
-    public ICollection<EventParameter> EventParameters { get; set; }
-    public ICollection<EventParticipant> EventParticipants { get; set; }
+    public EventType EventType { get; set; } = eventType;
+    public Target Target { get; set; } = target;
+    public ICollection<Tag> Tags { get; set; } = tags;
+    public ICollection<Sponsor> Sponsors { get; set; } = sponsors;
+    public ICollection<EventSpace> EventSpaces { get; set; } = eventSpaces;
+    public ICollection<EventParameter> EventParameters { get; set; } = eventParameters;
+    public ICollection<EventParticipant> EventParticipants { get; set; } = eventParticipants;
 }
 
-public class Tag
+public class Tag(int tagId, Guid eventId, string name, string value, Event @event)
 {
-    public Tag(int tagId, Guid eventId, string name, string value, Event @event)
-    {
-        TagId = tagId;
-        EventId = eventId;
-        Name = name;
-        Value = value;
-        Event = @event;
-    }
-
     [Key]
-    public int TagId { get; set; }
-    public Guid EventId { get; set; }
-    public string Name { get; set; }
-    public string Value { get; set; }
+    public int TagId { get; set; } = tagId;
+
+    public Guid EventId { get; set; } = eventId;
+    public string Name { get; set; } = name;
+    public string Value { get; set; } = value;
 
     // Nav Properties
-    public Event Event { get; set; }
+    public Event Event { get; set; } = @event;
 }
 
-public class EventType
+public class EventType(int eventTypeId, string description)
 {
     [Key]
-    public int EventTypeId { get; set; }
-    public string Description { get; set; }
+    public int EventTypeId { get; set; } = eventTypeId;
+
+    public string Description { get; set; } = description;
 }
 
-public class Sponsor
+public class Sponsor(int sponsorId, Guid eventId, Event @event)
 {
-    public Sponsor(int sponsorId, Guid eventId, Event @event)
-    {
-        SponsorId = sponsorId;
-        EventId = eventId;
-        Event = @event;
-    }
-
     [Key]
-    public int SponsorId { get; set; }
-    public Guid EventId { get; set; }
+    public int SponsorId { get; set; } = sponsorId;
+
+    public Guid EventId { get; set; } = eventId;
 
     // Nav Properties
-    public Event Event { get; set; }
+    public Event Event { get; set; } = @event;
 }
 
-public class Target
+public class Target(int targetId, string description)
 {
-    public Target(int targetId, string description)
-    {
-        TargetId = targetId;
-        Description = description;
-    }
-
     [Key]
-    public int TargetId { get; set; }
-    public string Description { get; set; }
+    public int TargetId { get; set; } = targetId;
+
+    public string Description { get; set; } = description;
 }
 
-public class EventSpace
+public class EventSpace(
+    int eventSpaceId,
+    Guid eventId,
+    int placeId,
+    DateTime startDate,
+    DateTime endDate,
+    Event @event,
+    Place place)
 {
-    public EventSpace(int eventSpaceId, Guid eventId, int placeId, DateTime startDate, DateTime endDate, Event @event, Place place)
-    {
-        EventSpaceId = eventSpaceId;
-        EventId = eventId;
-        PlaceId = placeId;
-        StartDate = startDate;
-        EndDate = endDate;
-        Event = @event;
-        Place = place;
-    }
-
     [Key]
-    public int EventSpaceId { get; set; }
-    public Guid EventId { get; set; }
-    public int PlaceId { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public int EventSpaceId { get; set; } = eventSpaceId;
+
+    public Guid EventId { get; set; } = eventId;
+    public int PlaceId { get; set; } = placeId;
+    public DateTime StartDate { get; set; } = startDate;
+    public DateTime EndDate { get; set; } = endDate;
 
     // Nav Properties
-    public Event Event { get; set; }
-    public Place Place { get; set; }
+    public Event Event { get; set; } = @event;
+    public Place Place { get; set; } = place;
 }
 
-public class Place
+public class Place(int placeId, string name, int capacity, PlaceAddress placeAddress)
 {
-    public Place(int placeId, string name, int capacity, PlaceAddress placeAddress)
-    {
-        PlaceId = placeId;
-        Name = name;
-        Capacity = capacity;
-        PlaceAddress = placeAddress;
-    }
-
     [Key]
-    public int PlaceId { get; set; }
-    public string Name { get; set; }
-    public int Capacity { get; set; }
+    public int PlaceId { get; set; } = placeId;
+
+    public string Name { get; set; } = name;
+    public int Capacity { get; set; } = capacity;
 
     // Nav Properties
-    public PlaceAddress PlaceAddress { get; set; }
+    public PlaceAddress PlaceAddress { get; set; } = placeAddress;
 }
 
-public class PlaceAddress
+public class PlaceAddress(int addressId, int placeId, Place place)
 {
-    public PlaceAddress(int addressId, int placeId, Place place)
-    {
-        AddressId = addressId;
-        PlaceId = placeId;
-        Place = place;
-    }
-
     [Key]
-    public int AddressId { get; set; }
-    public int PlaceId { get; set; }
+    public int AddressId { get; set; } = addressId;
+
+    public int PlaceId { get; set; } = placeId;
 
     // Nav Properties
-    public Place Place { get; set; }
+    public Place Place { get; set; } = place;
 }
 
-public class EventParameter
+public class EventParameter(int eventParameterId, Guid eventId, string key, string value, bool active, Event @event)
 {
-    public EventParameter(int eventParameterId, Guid eventId, string key, string value, bool active, Event @event)
-    {
-        EventParameterId = eventParameterId;
-        EventId = eventId;
-        Key = key;
-        Value = value;
-        Active = active;
-        Event = @event;
-    }
-
     [Key]
-    public int EventParameterId { get; set; }
-    public Guid EventId { get; set; }
-    public string Key { get; set; }
-    public string Value { get; set; }
-    public bool Active { get; set; }
+    public int EventParameterId { get; set; } = eventParameterId;
+
+    public Guid EventId { get; set; } = eventId;
+    public string Key { get; set; } = key;
+    public string Value { get; set; } = value;
+    public bool Active { get; set; } = active;
 
     // Nav Properties
-    public Event Event { get; set; }
+    public Event Event { get; set; } = @event;
 }
 
-public class EventParticipant
+public class EventParticipant(
+    int eventParticipantId,
+    Guid eventId,
+    Guid participantId,
+    string inviteEmail,
+    Event @event,
+    Participant participant)
 {
-    public EventParticipant(int eventParticipantId, Guid eventId, Guid participantId, string inviteEmail, Event @event, Participant participant)
-    {
-        EventParticipantId = eventParticipantId;
-        EventId = eventId;
-        ParticipantId = participantId;
-        InviteEmail = inviteEmail;
-        Event = @event;
-        Participant = participant;
-    }
-
     [Key]
-    public int EventParticipantId { get; set; }
-    public Guid EventId { get; set; }
-    public Guid ParticipantId { get; set; }
-    public string InviteEmail { get; set; }
+    public int EventParticipantId { get; set; } = eventParticipantId;
+
+    public Guid EventId { get; set; } = eventId;
+    public Guid ParticipantId { get; set; } = participantId;
+    public string InviteEmail { get; set; } = inviteEmail;
 
     // Nav Properties
-    public Event Event { get; set; }
-    public Participant Participant { get; set; }
+    public Event Event { get; set; } = @event;
+    public Participant Participant { get; set; } = participant;
 }
 
-public class Participant
+public class Participant(Guid participantId, string name, string email, string cpf, DateTime birthdate)
 {
-    public Participant(Guid participantId, string name, string email, string cpf, DateTime birthdate)
-    {
-        ParticipantId = participantId;
-        Name = name;
-        Email = email;
-        Cpf = cpf;
-        Birthdate = birthdate;
-    }
-
     [Key]
-    public Guid ParticipantId { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public string Cpf { get; set; }
-    public DateTime Birthdate { get; set; }
+    public Guid ParticipantId { get; set; } = participantId;
+
+    public string Name { get; set; } = name;
+    public string Email { get; set; } = email;
+    public string Cpf { get; set; } = cpf;
+    public DateTime Birthdate { get; set; } = birthdate;
 }
