@@ -1,6 +1,6 @@
 ﻿using Carter;
-using Event.Api.Database;
 using Event.Api.DTOs;
+using Event.Api.Infrastructure;
 using Event.Api.Shared;
 using FluentValidation;
 using Mapster;
@@ -24,20 +24,12 @@ public static class CreateEvent
         }
     }
 
-    internal sealed class Handler : IRequestHandler<Command, Result<Guid>>
+    internal sealed class Handler(EventDbContext dbContext, IValidator<Command> validator)
+        : IRequestHandler<Command, Result<Guid>>
     {
-        private readonly EventDbContext _dbContext;
-        private readonly IValidator<Command> _validator;
-
-        public Handler(EventDbContext dbContext, IValidator<Command> validator)
-        {
-            _dbContext = dbContext;
-            _validator = validator;
-        }
-
         public async Task<Result<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
             {
                 return Result.Failure<Guid>(new Error("CreateEvent.Validation",
@@ -46,8 +38,8 @@ public static class CreateEvent
 
             Entities.Event? eventEntity = default;
             
-            await _dbContext.AddAsync(eventEntity, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.AddAsync(eventEntity, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return eventEntity.EventId;
         }

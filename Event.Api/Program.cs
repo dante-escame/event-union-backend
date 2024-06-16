@@ -1,6 +1,6 @@
 using Carter;
-using Event.Api.Database;
 using Event.Api.Extensions;
+using Event.Api.Infrastructure;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<EventDbContext>(o =>
-    o.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+    o.UseNpgsql(builder.Configuration.GetConnectionString("Database"))
+        .UseSnakeCaseNamingConvention());
 
 var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));

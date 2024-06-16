@@ -1,4 +1,4 @@
-﻿using Event.Api.Database;
+﻿using Event.Api.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace Event.Api.Extensions;

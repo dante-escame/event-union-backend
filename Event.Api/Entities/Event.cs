@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+// ReSharper disable CollectionNeverUpdated.Global
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace Event.Api.Entities;
 
@@ -10,14 +12,7 @@ public class Event(
     DateTime startDate,
     DateTime endDate,
     int eventTypeId,
-    int targetId,
-    EventType eventType,
-    Target target,
-    ICollection<Tag> tags,
-    ICollection<Sponsor> sponsors,
-    ICollection<EventSpace> eventSpaces,
-    ICollection<EventParameter> eventParameters,
-    ICollection<EventParticipant> eventParticipants)
+    int targetId)
 {
     [Key]
     public Guid EventId { get; set; } = eventId;
@@ -31,16 +26,16 @@ public class Event(
     public int TargetId { get; set; } = targetId;
 
     // Nav Properties
-    public EventType EventType { get; set; } = eventType;
-    public Target Target { get; set; } = target;
-    public ICollection<Tag> Tags { get; set; } = tags;
-    public ICollection<Sponsor> Sponsors { get; set; } = sponsors;
-    public ICollection<EventSpace> EventSpaces { get; set; } = eventSpaces;
-    public ICollection<EventParameter> EventParameters { get; set; } = eventParameters;
-    public ICollection<EventParticipant> EventParticipants { get; set; } = eventParticipants;
+    public EventType EventType { get; set; }
+    public Target Target { get; set; }
+    public ICollection<Tag> Tags { get; set; }
+    public ICollection<Sponsor> Sponsors { get; set; }
+    public ICollection<EventSpace> EventSpaces { get; set; }
+    public ICollection<EventParameter> EventParameters { get; set; }
+    public ICollection<EventParticipant> EventParticipants { get; set; }
 }
 
-public class Tag(int tagId, Guid eventId, string name, string value, Event @event)
+public class Tag(int tagId, Guid eventId, string name, string value)
 {
     [Key]
     public int TagId { get; set; } = tagId;
@@ -50,7 +45,7 @@ public class Tag(int tagId, Guid eventId, string name, string value, Event @even
     public string Value { get; set; } = value;
 
     // Nav Properties
-    public Event Event { get; set; } = @event;
+    public Event Event { get; set; }
 }
 
 public class EventType(int eventTypeId, string description)
@@ -61,7 +56,7 @@ public class EventType(int eventTypeId, string description)
     public string Description { get; set; } = description;
 }
 
-public class Sponsor(int sponsorId, Guid eventId, Event @event)
+public class Sponsor(int sponsorId, Guid eventId)
 {
     [Key]
     public int SponsorId { get; set; } = sponsorId;
@@ -69,7 +64,7 @@ public class Sponsor(int sponsorId, Guid eventId, Event @event)
     public Guid EventId { get; set; } = eventId;
 
     // Nav Properties
-    public Event Event { get; set; } = @event;
+    public Event Event { get; set; }
 }
 
 public class Target(int targetId, string description)
@@ -85,9 +80,7 @@ public class EventSpace(
     Guid eventId,
     int placeId,
     DateTime startDate,
-    DateTime endDate,
-    Event @event,
-    Place place)
+    DateTime endDate)
 {
     [Key]
     public int EventSpaceId { get; set; } = eventSpaceId;
@@ -98,11 +91,11 @@ public class EventSpace(
     public DateTime EndDate { get; set; } = endDate;
 
     // Nav Properties
-    public Event Event { get; set; } = @event;
-    public Place Place { get; set; } = place;
+    public Event Event { get; set; }
+    public Place Place { get; set; }
 }
 
-public class Place(int placeId, string name, int capacity, PlaceAddress placeAddress)
+public class Place(int placeId, string name, int capacity)
 {
     [Key]
     public int PlaceId { get; set; } = placeId;
@@ -111,10 +104,10 @@ public class Place(int placeId, string name, int capacity, PlaceAddress placeAdd
     public int Capacity { get; set; } = capacity;
 
     // Nav Properties
-    public PlaceAddress PlaceAddress { get; set; } = placeAddress;
+    public PlaceAddress PlaceAddress { get; set; }
 }
 
-public class PlaceAddress(int addressId, int placeId, Place place)
+public class PlaceAddress(int addressId, int placeId)
 {
     [Key]
     public int AddressId { get; set; } = addressId;
@@ -122,10 +115,10 @@ public class PlaceAddress(int addressId, int placeId, Place place)
     public int PlaceId { get; set; } = placeId;
 
     // Nav Properties
-    public Place Place { get; set; } = place;
+    public Place Place { get; set; }
 }
 
-public class EventParameter(int eventParameterId, Guid eventId, string key, string value, bool active, Event @event)
+public class EventParameter(int eventParameterId, Guid eventId, string key, string value, bool active)
 {
     [Key]
     public int EventParameterId { get; set; } = eventParameterId;
@@ -136,16 +129,14 @@ public class EventParameter(int eventParameterId, Guid eventId, string key, stri
     public bool Active { get; set; } = active;
 
     // Nav Properties
-    public Event Event { get; set; } = @event;
+    public Event Event { get; set; }
 }
 
 public class EventParticipant(
     int eventParticipantId,
     Guid eventId,
     Guid participantId,
-    string inviteEmail,
-    Event @event,
-    Participant participant)
+    string inviteEmail)
 {
     [Key]
     public int EventParticipantId { get; set; } = eventParticipantId;
@@ -155,8 +146,8 @@ public class EventParticipant(
     public string InviteEmail { get; set; } = inviteEmail;
 
     // Nav Properties
-    public Event Event { get; set; } = @event;
-    public Participant Participant { get; set; } = participant;
+    public Event Event { get; set; }
+    public Participant Participant { get; set; }
 }
 
 public class Participant(Guid participantId, string name, string email, string cpf, DateTime birthdate)
