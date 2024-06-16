@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable CollectionNeverUpdated.Global
@@ -13,6 +14,7 @@ public class User(
     string cryptKey)
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid UserId { get; set; } = userId;
 
     public string Email { get; set; } = email;
@@ -30,6 +32,7 @@ public class User(
 public class Phone(int phoneId, Guid userId, string value)
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int PhoneId { get; set; } = phoneId;
 
     public Guid UserId { get; set; } = userId;
@@ -42,6 +45,7 @@ public class Phone(int phoneId, Guid userId, string value)
 public class Interest(int interestId, Guid userId, string name, string value)
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int InterestId { get; set; } = interestId;
 
     public Guid UserId { get; set; } = userId;
@@ -73,7 +77,10 @@ public class Address(
     string state,
     string country)
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid AddressId { get; set; } = addressId;
+    
     public string ZipCode { get; set; } = zipCode;
     public string Street { get; set; } = street;
     public string Neighborhood { get; set; } = neighborhood;
@@ -88,7 +95,10 @@ public class Address(
 
 public class Person(Guid personId, Guid userId, string name, string cpf, DateTime birthdate)
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid PersonId { get; set; } = personId;
+    
     public Guid UserId { get; set; } = userId;
     public string Name { get; set; } = name;
     public string Cpf { get; set; } = cpf;
@@ -106,7 +116,10 @@ public class Company(
     string tradeName,
     string specialization)
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid CompanyId { get; set; } = companyId;
+    
     public Guid UserId { get; set; } = userId;
     public string Cnpj { get; set; } = cnpj;
     public string LegalName { get; set; } = legalName;

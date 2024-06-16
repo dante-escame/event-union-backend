@@ -1,8 +1,10 @@
+using System.Reflection;
 using Carter;
 using Event.Api.Extensions;
 using Event.Api.Infrastructure;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +16,15 @@ builder.Services.AddDbContext<EventDbContext>(o =>
         .UseSnakeCaseNamingConvention());
 
 var assembly = typeof(Program).Assembly;
+
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
+
 builder.Services.AddCarter();
+
 builder.Services.AddValidatorsFromAssembly(assembly);
 
 var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -28,5 +34,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapCarter();
+
 app.UseHttpsRedirection();
+
 app.Run();

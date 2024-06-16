@@ -1,5 +1,5 @@
 ﻿namespace Event.Api.DTOs;
 
-public class CreateEventRequest
+public class UserResponse
 {
 }
