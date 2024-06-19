@@ -1,15 +1,15 @@
-using System.Reflection;
 using Carter;
 using Event.Api.Extensions;
 using Event.Api.Infrastructure;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddDbContext<EventDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("Database"))

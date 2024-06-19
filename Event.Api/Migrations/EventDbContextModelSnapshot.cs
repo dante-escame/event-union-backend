@@ -124,7 +124,7 @@ namespace Event.Api.Migrations
                         .HasColumnName("description");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<int>("EventTypeId")
@@ -137,7 +137,7 @@ namespace Event.Api.Migrations
                         .HasColumnName("name");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
                     b.Property<int>("TargetId")
@@ -240,7 +240,7 @@ namespace Event.Api.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("EventSpaceId"));
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("end_date");
 
                     b.Property<Guid>("EventId")
@@ -252,7 +252,7 @@ namespace Event.Api.Migrations
                         .HasColumnName("place_id");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("start_date");
 
                     b.HasKey("EventSpaceId")
@@ -327,7 +327,7 @@ namespace Event.Api.Migrations
                         .HasColumnName("participant_id");
 
                     b.Property<DateTime>("Birthdate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("birthdate");
 
                     b.Property<string>("Cpf")
@@ -359,7 +359,7 @@ namespace Event.Api.Migrations
                         .HasColumnName("person_id");
 
                     b.Property<DateTime>("Birthdate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("birthdate");
 
                     b.Property<string>("Cpf")

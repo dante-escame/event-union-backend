@@ -51,7 +51,7 @@ namespace Event.Api.Migrations
                     name = table.Column<string>(type: "text", nullable: false),
                     email = table.Column<string>(type: "text", nullable: false),
                     cpf = table.Column<string>(type: "text", nullable: false),
-                    birthdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    birthdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,8 +126,8 @@ namespace Event.Api.Migrations
                     user_owner_id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    start_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    end_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     event_type_id = table.Column<int>(type: "integer", nullable: false),
                     target_id = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -199,7 +199,7 @@ namespace Event.Api.Migrations
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
                     cpf = table.Column<string>(type: "text", nullable: false),
-                    birthdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    birthdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -313,8 +313,8 @@ namespace Event.Api.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     event_id = table.Column<Guid>(type: "uuid", nullable: false),
                     place_id = table.Column<int>(type: "integer", nullable: false),
-                    start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    start_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    end_date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {

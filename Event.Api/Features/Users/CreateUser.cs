@@ -38,7 +38,7 @@ public static class CreateUser
             var userId = Guid.NewGuid();
             var addressId = Guid.NewGuid();
             
-            var phoneEntity = new Phone(1, userId, request.Phone!.Value!);
+            var phoneEntity = new Phone(default, userId, request.Phone!.Value!);
             var personEntity = new Person(Guid.NewGuid(), userId, request.Person!.Name!, request.Person!.Cpf!,
                 request.Person.Birthdate!.Value);
             var companyEntity = new Company(Guid.NewGuid(), userId, request.Company!.Cnpj!, request.Company!.LegalName!,
@@ -51,6 +51,15 @@ public static class CreateUser
                 Address = addressEntity
             };
             
+            var i = 1;
+            var interestEntities = new List<Interest>();
+            if (request.Interests is not null)
+                foreach (var interest in request.Interests)
+                {
+                    interestEntities.Add(new Interest(i, userId, interest.Name!, interest.Value!));
+                    i++;
+                }
+
             var userEntity = new User(userId, 
                 request.Email!, 
                 request.Password!, 
@@ -59,7 +68,8 @@ public static class CreateUser
                 Phone = phoneEntity,
                 Person = personEntity,
                 Company = companyEntity,
-                UserAddress = userAddressEntity
+                UserAddress = userAddressEntity,
+                Interests = interestEntities
             };
             
             await dbContext.AddAsync(userEntity, cancellationToken);
@@ -74,21 +84,9 @@ public class CreateEventEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("api/events", async (UserRequest request, ISender sender) =>
+        app.MapPost("api/users", async (UserRequest request, ISender sender) =>
         {
             var command = new CreateUser.Command(request);
-
-            var result = await sender.Send(command);
-
-            if (result.IsFailure)
-                return Results.BadRequest(result.Error);
-
-            return Results.Ok(result.Value);
-        });
-            
-        app.MapPut("api/events", async (UserRequest request, ISender sender) =>
-        {
-            var command = request.Adapt<CreateUser.Command>();
 
             var result = await sender.Send(command);
 

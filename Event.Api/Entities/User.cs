@@ -22,7 +22,7 @@ public class User(
     public string CryptKey { get; set; } = cryptKey;
 
     // Nav Properties
-    public List<Interest> Interests { get; set; }
+    public ICollection<Interest> Interests { get; set; }
     public Phone Phone { get; set; }
     public Person Person { get; set; }
     public Company Company { get; set; }

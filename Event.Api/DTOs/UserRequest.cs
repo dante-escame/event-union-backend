@@ -4,7 +4,6 @@ namespace Event.Api.DTOs;
 
 public class UserRequest
 {
-    public Guid? UserId { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
     public string? CryptKey { get; set; }
@@ -29,7 +28,6 @@ public class CreateInterestRequest
 
 public class CreateUserAddressRequest
 {
-    public Guid? AddressId { get; set; }
     public string? ZipCode { get; set; }
     public string? Street { get; set; }
     public string? Neighborhood { get; set; }
