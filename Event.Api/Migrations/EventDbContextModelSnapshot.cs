@@ -296,21 +296,21 @@ namespace Event.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InterestId"));
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("value");
 
-                    b.HasKey("InterestId")
+                    b.HasKey("InterestId", "UserId")
                         .HasName("pk_interest");
 
                     b.HasIndex("UserId")
@@ -388,13 +388,6 @@ namespace Event.Api.Migrations
 
             modelBuilder.Entity("Event.Api.Entities.Phone", b =>
                 {
-                    b.Property<int>("PhoneId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("phone_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PhoneId"));
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
@@ -404,12 +397,8 @@ namespace Event.Api.Migrations
                         .HasColumnType("text")
                         .HasColumnName("value");
 
-                    b.HasKey("PhoneId")
+                    b.HasKey("UserId")
                         .HasName("pk_phone");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_phone_user_id");
 
                     b.ToTable("phone", (string)null);
                 });

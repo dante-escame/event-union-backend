@@ -29,12 +29,9 @@ public class User(
     public UserAddress UserAddress { get; set; }
 }
 
-public class Phone(int phoneId, Guid userId, string value)
+public class Phone(Guid userId, string value)
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int PhoneId { get; set; } = phoneId;
-
     public Guid UserId { get; set; } = userId;
     public string Value { get; set; } = value;
 
@@ -42,9 +39,9 @@ public class Phone(int phoneId, Guid userId, string value)
     public User User { get; set; }
 }
 
+[PrimaryKey("InterestId", "UserId")]
 public class Interest(int interestId, Guid userId, string name, string value)
 {
-    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int InterestId { get; set; } = interestId;
 

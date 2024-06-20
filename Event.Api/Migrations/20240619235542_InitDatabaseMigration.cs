@@ -182,7 +182,7 @@ namespace Event.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_interest", x => x.interest_id);
+                    table.PrimaryKey("pk_interest", x => new { x.interest_id, x.user_id });
                     table.ForeignKey(
                         name: "fk_interest_user_user_id",
                         column: x => x.user_id,
@@ -216,14 +216,12 @@ namespace Event.Api.Migrations
                 name: "phone",
                 columns: table => new
                 {
-                    phone_id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_phone", x => x.phone_id);
+                    table.PrimaryKey("pk_phone", x => x.user_id);
                     table.ForeignKey(
                         name: "fk_phone_user_user_id",
                         column: x => x.user_id,
@@ -422,12 +420,6 @@ namespace Event.Api.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_people_user_id",
                 table: "people",
-                column: "user_id",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_phone_user_id",
-                table: "phone",
                 column: "user_id",
                 unique: true);
 

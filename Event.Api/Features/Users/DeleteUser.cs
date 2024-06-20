@@ -9,17 +9,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Event.Api.Features.Users;
 
-public static class GetUserById
+public static class DeleteUser
 {
-    public class Command(Guid userId) : IRequest<Result<UserResponse?>>
+    public class Command(Guid userId) : IRequest<Result<Guid>>
     {
         public Guid UserId { get; set; }= userId;
     }
 
     internal sealed class Handler(EventDbContext dbContext)
-        : IRequestHandler<Command, Result<UserResponse?>>
+        : IRequestHandler<Command, Result<Guid>>
     {
-        public async Task<Result<UserResponse?>> Handle(Command command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(Command command, CancellationToken cancellationToken)
         {
             var userEntity = await dbContext.User
                 .Where(x => x.UserId == command.UserId)
@@ -30,25 +30,24 @@ public static class GetUserById
                 .ThenInclude(x => x.Address)
                 .Include(x => x.Phone)
                 .FirstOrDefaultAsync(cancellationToken);
-
-            if (userEntity is null)
-                return Result.Success<UserResponse?>(null);
-
-            var response = userEntity.Adapt<UserResponse>();
-            response.Address = userEntity.UserAddress.Address.Adapt<AddressResponse>();
             
-            return response;
+            if (userEntity is not null)
+                dbContext.Remove(userEntity);
+            
+            await dbContext.SaveChangesAsync(cancellationToken);
+            
+            return command.UserId;
         }
     }
 }
 
-public class GetUserByIdEndpoint : ICarterModule
+public class DeleteUserEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("api/users/{userId:guid}", async (Guid userId, ISender sender) =>
+        app.MapDelete("api/users/{userId:guid}", async (Guid userId, ISender sender) =>
         {
-            var command = new GetUserById.Command(userId);
+            var command = new DeleteUser.Command(userId);
 
             var result = await sender.Send(command);
 

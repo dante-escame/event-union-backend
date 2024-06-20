@@ -38,7 +38,7 @@ public static class CreateUser
             var userId = Guid.NewGuid();
             var addressId = Guid.NewGuid();
             
-            var phoneEntity = new Phone(default, userId, request.Phone!.Value!);
+            var phoneEntity = new Phone(userId, request.Phone!.Value!);
             var personEntity = new Person(Guid.NewGuid(), userId, request.Person!.Name!, request.Person!.Cpf!,
                 request.Person.Birthdate!.Value);
             var companyEntity = new Company(Guid.NewGuid(), userId, request.Company!.Cnpj!, request.Company!.LegalName!,
@@ -80,7 +80,7 @@ public static class CreateUser
     }
 }
 
-public class CreateEventEndpoint : ICarterModule
+public class CreateUserEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
