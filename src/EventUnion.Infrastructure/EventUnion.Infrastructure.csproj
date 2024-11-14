@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>EventUnion.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Dapper" Version="2.1.35" />
+	<PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
+	<PackageReference Include="MediatR" Version="12.3.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+	<PackageReference Include="Polly" Version="8.4.1" />
+	<PackageReference Include="Quartz" Version="3.13.0" />
+	<PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.0" />
+	<PackageReference Include="Scrutor" Version="4.2.2" />
+	<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+	<PackageReference Include="Serilog.Sinks.Seq" Version="8.0.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+    <ProjectReference Include="..\EventUnion.Domain\EventUnion.Domain.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
+</Project>
