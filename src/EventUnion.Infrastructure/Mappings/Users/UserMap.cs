@@ -9,10 +9,12 @@ public class UserMap : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("User");
-        
+
         builder.UseTptMappingStrategy();
         
-        builder.HasKey(u => u.UserId);
+        builder.Property(u => u.UserId)
+            .ValueGeneratedOnAdd()
+            .IsRequired();
         
         builder.OwnsOne(u => u.Email, x =>
         {

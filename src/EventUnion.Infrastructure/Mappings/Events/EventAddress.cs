@@ -1,26 +1,25 @@
-using EventUnion.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EventUnion.Infrastructure.Mappings.Events;
 
-public class PlaceAddressMap : IEntityTypeConfiguration<EventAddress>
+public class EventAddress : IEntityTypeConfiguration<Domain.Events.EventAddress>
 {
-    public void Configure(EntityTypeBuilder<EventAddress> builder)
+    public void Configure(EntityTypeBuilder<Domain.Events.EventAddress> builder)
     {
         builder.ToTable("EventAddress");
 
-        builder.HasKey(pa => pa.EventAddressId);
+        builder.HasKey(ea => ea.EventAddressId);
 
-        builder.Property(pa => pa.EventAddressId)
+        builder.Property(ea => ea.EventAddressId)
             .ValueGeneratedOnAdd()
             .IsRequired();
         
-        builder.HasOne(pa => pa.Event)
+        builder.HasOne(ea => ea.Event)
             .WithMany()
             .IsRequired();
 
-        builder.HasOne(pa => pa.Address)
+        builder.HasOne(ea => ea.Address)
             .WithMany()
             .IsRequired();
     }

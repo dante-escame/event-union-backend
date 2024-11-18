@@ -12,7 +12,7 @@ public class TagMap : IEntityTypeConfiguration<Tag>
         
         builder.HasKey(i => i.TagId);
         
-        builder.Property(name => name)
+        builder.Property(tag => tag.Name)
             .HasColumnName("name")
             .HasMaxLength(Tag.NameMaxLength)
             .IsRequired();

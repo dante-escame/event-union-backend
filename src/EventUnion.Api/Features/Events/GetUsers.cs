@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EventUnion.Api.Features.Events;
 
-public static class GetTags
+public static class GetUsers
 {
-    [HttpGet("api/tags")]
+    [HttpGet("api/users")]
     [AllowAnonymous]
     public class Endpoint(IDbConnectionFactory dbConnectionFactory) : EndpointWithoutRequest
     {
@@ -22,15 +22,16 @@ public static class GetTags
             const string sql = 
                 """
                     SELECT
-                        t.name AS Name 
-                    FROM Tag t
+                        u.user_id AS UserId, 
+                        u.name AS Name
+                    FROM User u
                 """;
             
-            var tags = await connection.QueryAsync<Response.Tag>(sql, ct);
+            var users = await connection.QueryAsync<Response.User>(sql, ct);
 
             var response = new Response
             {
-                Tags = tags.Select(x => x.Name).ToList()
+                Users = users.ToList()
             };
 
             await SendOkAsync(StandardResponse.FromSuccess(response), ct);
@@ -40,10 +41,11 @@ public static class GetTags
     public record Response
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public List<string> Tags { get; set; } = [];
-        public record Tag
+        public List<User> Users { get; set; } = [];
+        public record User
         {
-            public required string Name { get; init; }
+            public Guid TagId { get; init; }
+            public string? Name { get; init; }
         }
     }
 }

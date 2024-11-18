@@ -48,9 +48,5 @@ public class EventMap : IEntityTypeConfiguration<Event>
         builder.HasOne(e => e.Target)
             .WithMany()
             .IsRequired();
-        
-        builder.HasOne(e => e.Address)
-            .WithOne()
-            .IsRequired();
     }
 }
