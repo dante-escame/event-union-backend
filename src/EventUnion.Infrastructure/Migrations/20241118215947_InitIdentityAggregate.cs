@@ -15,7 +15,7 @@ namespace EventUnion.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "address",
                 columns: table => new
                 {
                     address_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -34,7 +34,7 @@ namespace EventUnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventType",
+                name: "event_type",
                 columns: table => new
                 {
                     event_type_id = table.Column<int>(type: "integer", nullable: false)
@@ -47,7 +47,7 @@ namespace EventUnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "tag",
                 columns: table => new
                 {
                     tag_id = table.Column<int>(type: "integer", nullable: false)
@@ -60,7 +60,7 @@ namespace EventUnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Target",
+                name: "target",
                 columns: table => new
                 {
                     target_id = table.Column<int>(type: "integer", nullable: false)
@@ -73,7 +73,7 @@ namespace EventUnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "user",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -85,11 +85,11 @@ namespace EventUnion.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.id);
+                    table.PrimaryKey("PK_user", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Company",
+                name: "company",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -101,23 +101,23 @@ namespace EventUnion.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Company", x => x.id);
+                    table.PrimaryKey("PK_company", x => x.id);
                     table.ForeignKey(
                         name: "fk_company_company_id",
                         column: x => x.id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_company_user_id",
                         column: x => x.id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Event",
+                name: "event",
                 columns: table => new
                 {
                     event_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -138,31 +138,31 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_event_address_address_id",
                         column: x => x.address_id,
-                        principalTable: "Address",
+                        principalTable: "address",
                         principalColumn: "address_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_event_event_type_event_type_id",
                         column: x => x.event_type_id,
-                        principalTable: "EventType",
+                        principalTable: "event_type",
                         principalColumn: "event_type_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_event_target_target_id",
                         column: x => x.target_id,
-                        principalTable: "Target",
+                        principalTable: "target",
                         principalColumn: "target_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_event_user_user_owner_id",
                         column: x => x.user_owner_id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Person",
+                name: "person",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -173,23 +173,23 @@ namespace EventUnion.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Person", x => x.id);
+                    table.PrimaryKey("PK_person", x => x.id);
                     table.ForeignKey(
                         name: "fk_person_person_id",
                         column: x => x.id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_person_user_id",
                         column: x => x.id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Phone",
+                name: "phone",
                 columns: table => new
                 {
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -202,13 +202,13 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_phone_user_user_id",
                         column: x => x.user_id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAddress",
+                name: "user_address",
                 columns: table => new
                 {
                     user_address_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -220,19 +220,19 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_user_address_address_address_id",
                         column: x => x.address_id,
-                        principalTable: "Address",
+                        principalTable: "address",
                         principalColumn: "address_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_user_address_user_user_address_id",
                         column: x => x.user_address_id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTag",
+                name: "user_tag",
                 columns: table => new
                 {
                     user_tag_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -245,19 +245,19 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_user_tag_tag_tag_id",
                         column: x => x.tag_id,
-                        principalTable: "Tag",
+                        principalTable: "tag",
                         principalColumn: "tag_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_user_tag_user_user_id",
                         column: x => x.user_id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventAddress",
+                name: "event_address",
                 columns: table => new
                 {
                     event_address_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -270,19 +270,19 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_event_address_address_address_id",
                         column: x => x.address_id,
-                        principalTable: "Address",
+                        principalTable: "address",
                         principalColumn: "address_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_event_address_event_event_id",
                         column: x => x.event_id,
-                        principalTable: "Event",
+                        principalTable: "event",
                         principalColumn: "event_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventTag",
+                name: "event_tag",
                 columns: table => new
                 {
                     event_tag_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -295,19 +295,19 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_event_tag_event_event_id",
                         column: x => x.event_id,
-                        principalTable: "Event",
+                        principalTable: "event",
                         principalColumn: "event_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_event_tag_tag_tag_id",
                         column: x => x.tag_id,
-                        principalTable: "Tag",
+                        principalTable: "tag",
                         principalColumn: "tag_id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventUser",
+                name: "event_user",
                 columns: table => new
                 {
                     event_user_id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -321,19 +321,19 @@ namespace EventUnion.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_event_user_event_event_id",
                         column: x => x.event_id,
-                        principalTable: "Event",
+                        principalTable: "event",
                         principalColumn: "event_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_event_user_user_user_id",
                         column: x => x.user_id,
-                        principalTable: "User",
+                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "EventType",
+                table: "event_type",
                 columns: new[] { "event_type_id", "name" },
                 values: new object[,]
                 {
@@ -343,7 +343,7 @@ namespace EventUnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Tag",
+                table: "tag",
                 columns: new[] { "tag_id", "name" },
                 values: new object[,]
                 {
@@ -376,7 +376,7 @@ namespace EventUnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Target",
+                table: "target",
                 columns: new[] { "target_id", "name" },
                 values: new object[,]
                 {
@@ -389,68 +389,68 @@ namespace EventUnion.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_address_id",
-                table: "Event",
+                table: "event",
                 column: "address_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_event_type_id",
-                table: "Event",
+                table: "event",
                 column: "event_type_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_target_id",
-                table: "Event",
+                table: "event",
                 column: "target_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_user_owner_id",
-                table: "Event",
+                table: "event",
                 column: "user_owner_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_address_address_id",
-                table: "EventAddress",
+                table: "event_address",
                 column: "address_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_address_event_id",
-                table: "EventAddress",
+                table: "event_address",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_tag_event_id",
-                table: "EventTag",
+                table: "event_tag",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_tag_tag_id",
-                table: "EventTag",
+                table: "event_tag",
                 column: "tag_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_user_event_id",
-                table: "EventUser",
+                table: "event_user",
                 column: "event_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_event_user_user_id",
-                table: "EventUser",
+                table: "event_user",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_address_address_id",
-                table: "UserAddress",
+                table: "user_address",
                 column: "address_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_tag_tag_id",
-                table: "UserTag",
+                table: "user_tag",
                 column: "tag_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_tag_user_id",
-                table: "UserTag",
+                table: "user_tag",
                 column: "user_id");
         }
 
@@ -458,46 +458,46 @@ namespace EventUnion.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Company");
+                name: "company");
 
             migrationBuilder.DropTable(
-                name: "EventAddress");
+                name: "event_address");
 
             migrationBuilder.DropTable(
-                name: "EventTag");
+                name: "event_tag");
 
             migrationBuilder.DropTable(
-                name: "EventUser");
+                name: "event_user");
 
             migrationBuilder.DropTable(
-                name: "Person");
+                name: "person");
 
             migrationBuilder.DropTable(
-                name: "Phone");
+                name: "phone");
 
             migrationBuilder.DropTable(
-                name: "UserAddress");
+                name: "user_address");
 
             migrationBuilder.DropTable(
-                name: "UserTag");
+                name: "user_tag");
 
             migrationBuilder.DropTable(
-                name: "Event");
+                name: "event");
 
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "tag");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "address");
 
             migrationBuilder.DropTable(
-                name: "EventType");
+                name: "event_type");
 
             migrationBuilder.DropTable(
-                name: "Target");
+                name: "target");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "user");
         }
     }
 }

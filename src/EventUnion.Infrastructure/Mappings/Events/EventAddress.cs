@@ -7,7 +7,7 @@ public class EventAddress : IEntityTypeConfiguration<Domain.Events.EventAddress>
 {
     public void Configure(EntityTypeBuilder<Domain.Events.EventAddress> builder)
     {
-        builder.ToTable("EventAddress");
+        builder.ToTable("event_address");
 
         builder.HasKey(ea => ea.EventAddressId);
 

@@ -22,7 +22,7 @@ public static class GetCities
             
             var response = new Response
             {
-                Cities = await IbgeUtilities.GetCitiesByState(state!)
+                Collection = await IbgeUtilities.GetCitiesByState(state!)
             };
 
             await SendOkAsync(StandardResponse.FromSuccess(response), ct);
@@ -31,6 +31,6 @@ public static class GetCities
 
     private record Response
     {
-        public List<string> Cities { get; set; } = [];
+        public List<string> Collection { get; set; } = [];
     }
 }

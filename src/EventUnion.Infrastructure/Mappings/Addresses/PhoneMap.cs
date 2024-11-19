@@ -8,7 +8,7 @@ public class PhoneMap : IEntityTypeConfiguration<Phone>
 {
     public void Configure(EntityTypeBuilder<Phone> builder)
     {
-        builder.ToTable("Phone");
+        builder.ToTable("phone");
         
         builder.HasKey(p => p.UserId);
         

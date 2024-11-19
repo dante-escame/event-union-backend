@@ -8,7 +8,7 @@ public class EventUserMap : IEntityTypeConfiguration<EventUser>
 {
     public void Configure(EntityTypeBuilder<EventUser> builder)
     {
-        builder.ToTable("EventUser");
+        builder.ToTable("event_user");
 
         builder.HasKey(eu => eu.EventUserId);
 

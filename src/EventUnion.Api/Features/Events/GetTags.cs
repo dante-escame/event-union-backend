@@ -30,7 +30,7 @@ public static class GetTags
 
             var response = new Response
             {
-                Tags = tags.Select(x => x.Name).ToList()
+                Collection = tags.Select(x => x.Name).ToList()
             };
 
             await SendOkAsync(StandardResponse.FromSuccess(response), ct);
@@ -40,7 +40,7 @@ public static class GetTags
     public record Response
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public List<string> Tags { get; set; } = [];
+        public List<string> Collection { get; set; } = [];
         public record Tag
         {
             public required string Name { get; init; }

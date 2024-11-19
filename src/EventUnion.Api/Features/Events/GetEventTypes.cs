@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EventUnion.Api.Features.Events;
 
-public static class GetTargets
+public static class GetTargetTypes
 {
-    [HttpGet("api/targets")]
+    [HttpGet("api/event-types")]
     [AllowAnonymous]
     public class Endpoint(IDbConnectionFactory dbConnectionFactory) : EndpointWithoutRequest
     {
@@ -22,15 +22,15 @@ public static class GetTargets
             const string sql = 
                 """
                     SELECT
-                        t.name AS Name 
-                    FROM Target t
+                        et.name AS Name 
+                    FROM event_type et
                 """;
             
-            var targets = await connection.QueryAsync<Response.Target>(sql, ct);
+            var eventTypes = await connection.QueryAsync<Response.EventType>(sql, ct);
 
             var response = new Response
             {
-                Collection = targets.Select(x => x.Name).ToList()
+                Collection = eventTypes.Select(x => x.Name).ToList()
             };
 
             await SendOkAsync(StandardResponse.FromSuccess(response), ct);
@@ -41,7 +41,7 @@ public static class GetTargets
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public List<string> Collection { get; set; } = [];
-        public record Target
+        public record EventType
         {
             public required string Name { get; init; }
         }

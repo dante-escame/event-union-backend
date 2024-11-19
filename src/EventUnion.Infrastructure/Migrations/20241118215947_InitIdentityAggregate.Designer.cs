@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventUnion.Infrastructure.Migrations
 {
     [DbContext(typeof(EventUnionDbContext))]
-    [Migration("20241118214609_InitIdentityAggregate")]
+    [Migration("20241118215947_InitIdentityAggregate")]
     partial class InitIdentityAggregate
     {
         /// <inheritdoc />
@@ -82,7 +82,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasKey("AddressId")
                         .HasName("pk_address");
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("address", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Addresses.Phone", b =>
@@ -104,7 +104,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasKey("UserId")
                         .HasName("pk_phone");
 
-                    b.ToTable("Phone", (string)null);
+                    b.ToTable("phone", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Events.Event", b =>
@@ -159,7 +159,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasIndex("UserOwnerId")
                         .HasDatabaseName("ix_event_user_owner_id");
 
-                    b.ToTable("Event", (string)null);
+                    b.ToTable("event", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Events.EventAddress", b =>
@@ -186,7 +186,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasIndex("EventId")
                         .HasDatabaseName("ix_event_address_event_id");
 
-                    b.ToTable("EventAddress", (string)null);
+                    b.ToTable("event_address", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Events.EventTag", b =>
@@ -213,7 +213,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasIndex("TagId")
                         .HasDatabaseName("ix_event_tag_tag_id");
 
-                    b.ToTable("EventTag", (string)null);
+                    b.ToTable("event_tag", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Events.EventType", b =>
@@ -233,7 +233,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasKey("EventTypeId")
                         .HasName("pk_event_type");
 
-                    b.ToTable("EventType", (string)null);
+                    b.ToTable("event_type", (string)null);
 
                     b.HasData(
                         new
@@ -282,7 +282,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_event_user_user_id");
 
-                    b.ToTable("EventUser", (string)null);
+                    b.ToTable("event_user", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Events.Tag", b =>
@@ -303,7 +303,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasKey("TagId")
                         .HasName("pk_tag");
 
-                    b.ToTable("Tag", (string)null);
+                    b.ToTable("tag", (string)null);
 
                     b.HasData(
                         new
@@ -455,7 +455,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasKey("TargetId")
                         .HasName("pk_target");
 
-                    b.ToTable("Target", (string)null);
+                    b.ToTable("target", (string)null);
 
                     b.HasData(
                         new
@@ -514,7 +514,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("user", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -537,7 +537,7 @@ namespace EventUnion.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_user_address_address_id");
 
-                    b.ToTable("UserAddress", (string)null);
+                    b.ToTable("user_address", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Users.UserTag", b =>
@@ -564,7 +564,7 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_user_tag_user_id");
 
-                    b.ToTable("UserTag", (string)null);
+                    b.ToTable("user_tag", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Users.Company", b =>
@@ -581,7 +581,7 @@ namespace EventUnion.Infrastructure.Migrations
                         .HasColumnType("character varying(90)")
                         .HasColumnName("specialization");
 
-                    b.ToTable("Company", (string)null);
+                    b.ToTable("company", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Users.Person", b =>
@@ -592,7 +592,7 @@ namespace EventUnion.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("person_id");
 
-                    b.ToTable("Person", (string)null);
+                    b.ToTable("person", (string)null);
                 });
 
             modelBuilder.Entity("EventUnion.Domain.Addresses.Phone", b =>
@@ -651,7 +651,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("EventId");
 
-                            b1.ToTable("Event");
+                            b1.ToTable("event");
 
                             b1.WithOwner()
                                 .HasForeignKey("EventId")
@@ -674,7 +674,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("EventId");
 
-                            b1.ToTable("Event");
+                            b1.ToTable("event");
 
                             b1.WithOwner()
                                 .HasForeignKey("EventId")
@@ -775,7 +775,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("User");
+                            b1.ToTable("user");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId")
@@ -851,7 +851,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("CompanyId");
 
-                            b1.ToTable("Company");
+                            b1.ToTable("company");
 
                             b1.WithOwner()
                                 .HasForeignKey("CompanyId")
@@ -872,7 +872,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("CompanyId");
 
-                            b1.ToTable("Company");
+                            b1.ToTable("company");
 
                             b1.WithOwner()
                                 .HasForeignKey("CompanyId")
@@ -893,7 +893,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("CompanyId");
 
-                            b1.ToTable("Company");
+                            b1.ToTable("company");
 
                             b1.WithOwner()
                                 .HasForeignKey("CompanyId")
@@ -933,7 +933,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("Person");
+                            b1.ToTable("person");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId")
@@ -952,7 +952,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("Person");
+                            b1.ToTable("person");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId")
@@ -973,7 +973,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("Person");
+                            b1.ToTable("person");
 
                             b1.WithOwner()
                                 .HasForeignKey("PersonId")

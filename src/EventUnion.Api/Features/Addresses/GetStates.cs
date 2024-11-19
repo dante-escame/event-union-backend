@@ -18,7 +18,7 @@ public static class GetStates
         {
             var response = new Response
             {
-                States = IbgeUtilities.GetStates()
+                Collection = IbgeUtilities.GetStates()
             };
 
             await SendOkAsync(StandardResponse.FromSuccess(response), ct);
@@ -27,6 +27,6 @@ public static class GetStates
 
     private record Response
     {
-        public List<string> States { get; set; } = [];
+        public List<string> Collection { get; set; } = [];
     }
 }

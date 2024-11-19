@@ -8,7 +8,7 @@ public class CompanyMap : IEntityTypeConfiguration<Company>
 {
     public void Configure(EntityTypeBuilder<Company> builder)
     {
-        builder.ToTable("Company");
+        builder.ToTable("company");
         
         builder.Property(c => c.CompanyId).IsRequired();
         

@@ -8,7 +8,7 @@ public class PersonMap : IEntityTypeConfiguration<Person>
 {
     public void Configure(EntityTypeBuilder<Person> builder)
     {
-        builder.ToTable("Person");
+        builder.ToTable("person");
         
         builder.Property(p => p.PersonId).IsRequired();
         

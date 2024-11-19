@@ -8,7 +8,7 @@ public class EventMap : IEntityTypeConfiguration<Event>
 {
     public void Configure(EntityTypeBuilder<Event> builder)
     {
-        builder.ToTable("Event");
+        builder.ToTable("event");
 
         builder.HasKey(e => e.EventId);
 

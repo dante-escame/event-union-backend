@@ -8,7 +8,7 @@ public class UserTagMap : IEntityTypeConfiguration<UserTag>
 {
     public void Configure(EntityTypeBuilder<UserTag> builder)
     {
-        builder.ToTable("UserTag");
+        builder.ToTable("user_tag");
         
         builder.HasKey(ut => ut.UserTagId);
 

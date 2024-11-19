@@ -18,7 +18,7 @@ public static class GetCountries
         {
             var response = new Response
             {
-                Countries = IbgeUtilities.GetCountries()
+                Collection = IbgeUtilities.GetCountries()
             };
 
             await SendOkAsync(StandardResponse.FromSuccess(response), ct);
@@ -27,6 +27,6 @@ public static class GetCountries
 
     private record Response
     {
-        public List<string> Countries { get; set; } = [];
+        public List<string> Collection { get; set; } = [];
     }
 }

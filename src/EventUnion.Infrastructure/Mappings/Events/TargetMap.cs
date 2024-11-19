@@ -8,7 +8,7 @@ public class TargetMap : IEntityTypeConfiguration<Target>
 {
     public void Configure(EntityTypeBuilder<Target> builder)
     {
-        builder.ToTable("Target");
+        builder.ToTable("target");
 
         builder.HasKey(t => t.TargetId);
         
