@@ -3,6 +3,7 @@ using System;
 using EventUnion.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventUnion.Infrastructure.Migrations
 {
     [DbContext(typeof(EventUnionDbContext))]
-    partial class EventUnionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119225547_AlterAddressMappingAggregate")]
+    partial class AlterAddressMappingAggregate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -18,8 +18,9 @@ public class Phone
     public User User { get; private set; }
     public string Value { get; private set; }
 
-    public Phone(Guid phoneId, User user, string value)
+    public Phone(User user, string value)
     {
+        PhoneId = new Guid();
         User = user;
         Value = value;
     }

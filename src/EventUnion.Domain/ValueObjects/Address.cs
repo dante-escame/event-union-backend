@@ -95,7 +95,7 @@ public partial class Address : ValueObject
     
     [GeneratedRegex(@"^\d+$")]
     private static partial Regex NumericRegex();
-    [GeneratedRegex(@"^[a-zA-Z0-9\s]+$")]
+    [GeneratedRegex(@"^[a-zA-Z0-9À-ÿ\s]+$")]
     private static partial Regex AlphanumericRegex();
 
     // EFCore Constructor

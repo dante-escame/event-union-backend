@@ -83,8 +83,7 @@ public static class AddPhone
 
             if (user is not null)
             {
-                var phone = new Phone(Guid.NewGuid(),
-                    user,
+                var phone = new Phone(user,
                     request.Phone ?? "");
                 await unitOfWork.AddAsync(phone, ct);
 

@@ -32,8 +32,8 @@ public static class AddEvent
         public string? Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int? EventTypeId { get; set; }
-        public int? TargetId { get; set; }
+        public string? EventType { get; set; }
+        public string? Target { get; set; }
         public bool? Private { get; set; }
         public AddressPayload? Address { get; set; }
         public List<string>? Tags { get; set; }
@@ -72,11 +72,11 @@ public static class AddEvent
             RuleFor(x => x.EndDate)
                 .NotNullWithError();
             
-            RuleFor(x => x.EventTypeId)
-                .NotNullWithError();
+            RuleFor(x => x.EventType)
+                .NotEmptyWithError();
             
-            RuleFor(x => x.TargetId)
-                .NotNullWithError();
+            RuleFor(x => x.Target)
+                .NotEmptyWithError();
             
             RuleFor(x => x.Private)
                 .NotNullWithError();
@@ -85,7 +85,7 @@ public static class AddEvent
                 .NotNullWithError()
                 .MustBeValueObject(address => Address.Create(address?.ZipCode ?? "",
                     address?.Street ?? "",
-                    address?.Neighbourhood ?? "",
+                    address?.Neighborhood ?? "",
                     address?.Number ?? "",
                     address?.AddInfo ?? "",
                     address?.State ?? "",
@@ -122,14 +122,14 @@ public static class AddEvent
                 Address.Create(
                     req.Address?.ZipCode!,
                     req.Address?.Street!,
-                    req.Address?.Neighbourhood!,
+                    req.Address?.Neighborhood!,
                     req.Address?.Number!,
                     req.Address?.AddInfo!,
                     req.Address?.State!,
                     req.Address?.Country!,
                     req.Address?.City!).Value, 
-                req.EventTypeId!.Value, 
-                req.TargetId!.Value, 
+                req.EventType!, 
+                req.Target!, 
                 req.Private!.Value, 
                 req.Tags!, 
                 req.ParticipantEmails!);
@@ -148,8 +148,8 @@ public static class AddEvent
         DateTime StartDate,
         DateTime EndDate,
         Address Address,
-        int EventTypeId,
-        int TargetId,
+        string EventType,
+        string Target,
         bool Private,
         List<string> Tags,
         List<string> ParticipantEmails) : IRequest<Result<ResourceLocator<Response>, Error>>;
@@ -167,16 +167,18 @@ public static class AddEvent
                 return CommonError.EntityNotFound("Usuário", request.UserOwnerId.ToString());
             
             var target = await dbContext.Set<Target>()
-                .FirstOrDefaultAsync(x => x.TargetId == request.TargetId, ct);
+                .FirstOrDefaultAsync(x => x.Name == request.Target, ct);
             if (target is null)
-                return CommonError.EntityNotFound("Público Alvo", request.TargetId.ToString());
+                return CommonError.EntityNotFound("Público Alvo", request.Target.ToString());
             
             var eventType = await dbContext.Set<EventType>()
-                .FirstOrDefaultAsync(x => x.EventTypeId == request.EventTypeId, ct);
+                .FirstOrDefaultAsync(x => x.Name == request.EventType, ct);
             if (eventType is null)
-                return CommonError.EntityNotFound("Tipo de Evento", request.EventTypeId.ToString());
+                return CommonError.EntityNotFound("Tipo de Evento", request.EventType.ToString());
 
             var address = new Domain.Addresses.Address(Guid.NewGuid(), request.Address);
+            
+            await unitOfWork.AddAsync(address, ct);
             
             var eventEntity = new Event(Guid.NewGuid(), 
                 userOwner,

@@ -50,13 +50,5 @@ public class AddressMap : IEntityTypeConfiguration<Address>
             .HasColumnName("city")
             .HasMaxLength(Address.CityMaxLength)
             .IsRequired();
-        
-        builder.Property(a => a.ZipCode).IsRequired().HasMaxLength(10);
-        builder.Property(a => a.Street).IsRequired().HasMaxLength(256);
-        builder.Property(a => a.Neighborhood).HasMaxLength(256);
-        builder.Property(a => a.Number).HasMaxLength(10);
-        builder.Property(a => a.AdditionalInfo).HasMaxLength(256);
-        builder.Property(a => a.State).IsRequired().HasMaxLength(2);
-        builder.Property(a => a.Country).IsRequired().HasMaxLength(100);
     }
 }

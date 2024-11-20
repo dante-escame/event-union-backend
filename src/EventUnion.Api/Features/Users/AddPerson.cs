@@ -29,7 +29,7 @@ public static class AddPerson
         public string? Name { get; set; }
         public string? Cpf { get; set; }
         public DateTime Birthdate { get; set; }
-        public List<int>? Tags { get; set; }
+        public List<string>? Tags { get; set; }
 
         public record UserPayload
         {
@@ -100,7 +100,7 @@ public static class AddPerson
     
     #region Handler
     public record Command(
-        FullName? Name, Cpf? Cpf, Birthdate? BirthDate, List<int>? Tags,
+        FullName? Name, Cpf? Cpf, Birthdate? BirthDate, List<string>? Tags,
         Email? Email, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
     
     // ReSharper disable once UnusedType.Global
@@ -119,10 +119,10 @@ public static class AddPerson
             
             await unitOfWork.AddAsync(person, ct);
 
-            foreach (var tagId in request.Tags ?? [])
+            foreach (var tagName in request.Tags ?? [])
             {
                 var tag = await dbContext.Set<Tag>()
-                    .FirstOrDefaultAsync(x => x.TagId == tagId,
+                    .FirstOrDefaultAsync(x => x.Name == tagName,
                         cancellationToken: ct);
                 if (tag is not null)
                     await unitOfWork.AddAsync(new UserTag(tag, person), ct);

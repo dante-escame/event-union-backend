@@ -56,7 +56,7 @@ public static class Login
         public override async Task<Result<ResourceLocator<string>, Error>> ExecuteAsync(Request req, CancellationToken ct)
         {
             var commandSave = new Command(
-                Email.Create(req.Email!).Value, req.Password);
+                req.Email, req.Password);
             
             return await sender.Send(commandSave, ct);
         }
@@ -65,7 +65,7 @@ public static class Login
     
     #region Handler
     public record Command(
-        Email? Email, string? Password) : IRequest<Result<ResourceLocator<string>, Error>>;
+        string? Email, string? Password) : IRequest<Result<ResourceLocator<string>, Error>>;
     
     // ReSharper disable once UnusedType.Global
     internal class Handler(EventUnionDbContext dbContext)
@@ -74,7 +74,7 @@ public static class Login
         public async Task<Result<ResourceLocator<string>, Error>> Handle(Command request, CancellationToken ct)
         {
             var user = await dbContext.Set<User>()
-                .FirstOrDefaultAsync(x => x.Email == request.Email,
+                .FirstOrDefaultAsync(x => x.Email.Value == request.Email,
                 cancellationToken: ct);
             
             if (user is not null)
@@ -89,7 +89,7 @@ public static class Login
                         o.SigningKey = Random256BytesKey.Value; 
                         o.ExpireAt = DateTime.UtcNow.AddDays(1);
                         o.User.Roles.Add("Manager", "Auditor");
-                        o.User.Claims.Add(("UserName", request.Email!.Value));
+                        o.User.Claims.Add(("UserName", request.Email!));
                         o.User["UserId"] = "001";
                     });
                 

@@ -43,7 +43,7 @@ public static class AddAddress
                 .NotNullWithError()
                 .MustBeValueObject(address => Domain.ValueObjects.Address.Create(address?.ZipCode ?? "",
                     address?.Street ?? "",
-                    address?.Neighbourhood ?? "",
+                    address?.Neighborhood ?? "",
                     address?.Number ?? "",
                     address?.AddInfo ?? "",
                     address?.State ?? "",
@@ -68,7 +68,7 @@ public static class AddAddress
                 Domain.ValueObjects.Address.Create(
                     req.Address?.ZipCode!,
                     req.Address?.Street!,
-                    req.Address?.Neighbourhood!,
+                    req.Address?.Neighborhood!,
                     req.Address?.Number!,
                     req.Address?.AddInfo!,
                     req.Address?.State!,
