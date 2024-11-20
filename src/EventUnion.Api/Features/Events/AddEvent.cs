@@ -169,12 +169,12 @@ public static class AddEvent
             var target = await dbContext.Set<Target>()
                 .FirstOrDefaultAsync(x => x.Name == request.Target, ct);
             if (target is null)
-                return CommonError.EntityNotFound("Público Alvo", request.Target.ToString());
+                return CommonError.EntityNotFound("Público Alvo", request.Target);
             
             var eventType = await dbContext.Set<EventType>()
                 .FirstOrDefaultAsync(x => x.Name == request.EventType, ct);
             if (eventType is null)
-                return CommonError.EntityNotFound("Tipo de Evento", request.EventType.ToString());
+                return CommonError.EntityNotFound("Tipo de Evento", request.EventType);
 
             var address = new Domain.Addresses.Address(Guid.NewGuid(), request.Address);
             
@@ -204,12 +204,15 @@ public static class AddEvent
 
             foreach (var email in request.ParticipantEmails)
             {
-                var eventUser = await dbContext.Set<User>()
+                var user = await dbContext.Set<User>()
                     .FirstOrDefaultAsync(x => x.Email.Value == email,
                         cancellationToken: ct);
-                if (eventUser is not null)
-                    await unitOfWork.AddAsync(new EventUser(eventEntity, eventUser, email), ct);
+                if (user is not null)
+                    await unitOfWork.AddAsync(new EventUser(eventEntity, user, email), ct);
             }
+
+            var eventAddress = new EventAddress(eventEntity, address);
+            await unitOfWork.AddAsync(eventAddress, ct);
 
             var result = await unitOfWork.SaveChangesAsync(ct);
             if (result.IsFailure)

@@ -11,7 +11,7 @@ using EventUnion.Domain.ValueObjects;
 
 namespace EventUnion.Domain.Users;
 
-public abstract class User : AggregateRoot<Guid>
+public abstract class User
 {
     [NotMapped] public const int EmailMaxLength = 128;
     

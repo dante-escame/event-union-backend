@@ -21,6 +21,7 @@ public class EventUser
 
     public EventUser(Event eventObj, User user, string inviteEmail)
     {
+        EventUserId = new Guid();
         Event = eventObj;
         User = user;
         InviteEmail = inviteEmail;

@@ -10,7 +10,9 @@ public class PhoneMap : IEntityTypeConfiguration<Phone>
     {
         builder.ToTable("phone");
         
-        builder.HasKey(p => p.UserId);
+        builder.HasKey(p => p.PhoneId);
+        
+        builder.Property(p => p.UserId).IsRequired();
         
         builder.HasOne(p => p.User)
             .WithOne()

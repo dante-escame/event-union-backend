@@ -61,7 +61,8 @@ public static class GetEventById
                             ARRAY(SELECT DISTINCT t.name FROM tag t
                                 JOIN event_tag et ON et.event_id = e.event_id) AS Tags,
                             ARRAY(SELECT DISTINCT u.email FROM "user" u
-                                JOIN event_user uu ON uu.user_id = u.user_id) AS ParticipantNames
+                                JOIN event_user uu 
+                                    ON uu.event_id = e.event_id) AS ParticipantEmails
                         FROM event e
                              LEFT JOIN event_address ea ON ea.event_id = e.event_id
                              LEFT JOIN address a ON a.address_id = ea.address_id
@@ -94,7 +95,7 @@ public static class GetEventById
         public required bool Private { get; init; }
         // ReSharper disable CollectionNeverUpdated.Global
         public required string[] Tags { get; init; } = [];
-        public required string[] ParticipantNames { get; init; } = [];
+        public required string[] ParticipantEmails { get; init; } = [];
         // ReSharper restore CollectionNeverUpdated.Global
     }
 }

@@ -30,7 +30,7 @@ public static class AddCompany
         public string? TradeName { get; set; }
         public string? Cnpj { get; set; }
         public string? Specialization { get; set; }
-        public List<int>? Tags { get; set; }
+        public List<string>? Tags { get; set; }
 
         // ReSharper disable once ClassNeverInstantiated.Global
         public record UserPayload
@@ -102,7 +102,7 @@ public static class AddCompany
     #region Handler
     public record Command(
         FullName? LegalName, FullName? TradeName, Cnpj? Cnpj, string? Specialization,
-        List<int>? Tags, Email? Email, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
+        List<string>? Tags, Email? Email, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
     
     internal class Handler(
         IUnitOfWork unitOfWork,
@@ -119,10 +119,10 @@ public static class AddCompany
             
             await unitOfWork.AddAsync(company, ct);
 
-            foreach (var tagId in request.Tags ?? [])
+            foreach (var tagName in request.Tags ?? [])
             {
                 var tag = await dbContext.Set<Tag>()
-                    .FirstOrDefaultAsync(x => x.TagId == tagId,
+                    .FirstOrDefaultAsync(x => x.Name == tagName,
                         cancellationToken: ct);
                 if (tag is not null)
                     await unitOfWork.AddAsync(new UserTag(tag, company), ct);

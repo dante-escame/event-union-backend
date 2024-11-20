@@ -83,13 +83,14 @@ namespace EventUnion.Infrastructure.Migrations
 
             modelBuilder.Entity("EventUnion.Domain.Addresses.Phone", b =>
                 {
+                    b.Property<Guid>("PhoneId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("phone_id");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
-
-                    b.Property<Guid>("PhoneId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("phone_id");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -97,8 +98,12 @@ namespace EventUnion.Infrastructure.Migrations
                         .HasColumnType("character varying(15)")
                         .HasColumnName("value");
 
-                    b.HasKey("UserId")
+                    b.HasKey("PhoneId")
                         .HasName("pk_phone");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_phone_user_id");
 
                     b.ToTable("phone", (string)null);
                 });
@@ -136,9 +141,9 @@ namespace EventUnion.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("target_id");
 
-                    b.Property<Guid>("UserOwnerId")
+                    b.Property<Guid>("UserOwnerUserId")
                         .HasColumnType("uuid")
-                        .HasColumnName("user_owner_id");
+                        .HasColumnName("user_owner_user_id");
 
                     b.HasKey("EventId")
                         .HasName("pk_event");
@@ -152,8 +157,8 @@ namespace EventUnion.Infrastructure.Migrations
                     b.HasIndex("TargetId")
                         .HasDatabaseName("ix_event_target_id");
 
-                    b.HasIndex("UserOwnerId")
-                        .HasDatabaseName("ix_event_user_owner_id");
+                    b.HasIndex("UserOwnerUserId")
+                        .HasDatabaseName("ix_event_user_owner_user_id");
 
                     b.ToTable("event", (string)null);
                 });
@@ -483,10 +488,10 @@ namespace EventUnion.Infrastructure.Migrations
 
             modelBuilder.Entity("EventUnion.Domain.Users.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("user_id");
 
                     b.Property<string>("CriptKey")
                         .IsRequired()
@@ -503,12 +508,7 @@ namespace EventUnion.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password");
 
-                    b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("user", (string)null);
 
@@ -628,10 +628,10 @@ namespace EventUnion.Infrastructure.Migrations
 
                     b.HasOne("EventUnion.Domain.Users.User", "UserOwner")
                         .WithMany()
-                        .HasForeignKey("UserOwnerId")
+                        .HasForeignKey("UserOwnerUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_event_user_user_owner_id");
+                        .HasConstraintName("fk_event_user_user_owner_user_id");
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.FullName", "Name", b1 =>
                         {
@@ -761,7 +761,7 @@ namespace EventUnion.Infrastructure.Migrations
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -775,7 +775,7 @@ namespace EventUnion.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId")
-                                .HasConstraintName("fk_user_user_id");
+                                .HasConstraintName("fk_user_user_user_id");
                         });
 
                     b.Navigation("Email")
@@ -828,16 +828,16 @@ namespace EventUnion.Infrastructure.Migrations
                 {
                     b.HasOne("EventUnion.Domain.Users.User", null)
                         .WithOne()
-                        .HasForeignKey("EventUnion.Domain.Users.Company", "Id")
+                        .HasForeignKey("EventUnion.Domain.Users.Company", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_company_user_id");
+                        .HasConstraintName("fk_company_user_user_id");
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.FullName", "LegalName", b1 =>
                         {
-                            b1.Property<Guid>("CompanyId")
+                            b1.Property<Guid>("CompanyUserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -845,20 +845,20 @@ namespace EventUnion.Infrastructure.Migrations
                                 .HasColumnType("character varying(256)")
                                 .HasColumnName("legal_name");
 
-                            b1.HasKey("CompanyId");
+                            b1.HasKey("CompanyUserId");
 
                             b1.ToTable("company");
 
                             b1.WithOwner()
-                                .HasForeignKey("CompanyId")
-                                .HasConstraintName("fk_company_company_id");
+                                .HasForeignKey("CompanyUserId")
+                                .HasConstraintName("fk_company_company_user_id");
                         });
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.FullName", "TradeName", b1 =>
                         {
-                            b1.Property<Guid>("CompanyId")
+                            b1.Property<Guid>("CompanyUserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -866,20 +866,20 @@ namespace EventUnion.Infrastructure.Migrations
                                 .HasColumnType("character varying(256)")
                                 .HasColumnName("trade_name");
 
-                            b1.HasKey("CompanyId");
+                            b1.HasKey("CompanyUserId");
 
                             b1.ToTable("company");
 
                             b1.WithOwner()
-                                .HasForeignKey("CompanyId")
-                                .HasConstraintName("fk_company_company_id");
+                                .HasForeignKey("CompanyUserId")
+                                .HasConstraintName("fk_company_company_user_id");
                         });
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.Cnpj", "Cnpj", b1 =>
                         {
-                            b1.Property<Guid>("CompanyId")
+                            b1.Property<Guid>("CompanyUserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -887,13 +887,13 @@ namespace EventUnion.Infrastructure.Migrations
                                 .HasColumnType("character varying(14)")
                                 .HasColumnName("cnpj");
 
-                            b1.HasKey("CompanyId");
+                            b1.HasKey("CompanyUserId");
 
                             b1.ToTable("company");
 
                             b1.WithOwner()
-                                .HasForeignKey("CompanyId")
-                                .HasConstraintName("fk_company_company_id");
+                                .HasForeignKey("CompanyUserId")
+                                .HasConstraintName("fk_company_company_user_id");
                         });
 
                     b.Navigation("Cnpj")
@@ -910,16 +910,16 @@ namespace EventUnion.Infrastructure.Migrations
                 {
                     b.HasOne("EventUnion.Domain.Users.User", null)
                         .WithOne()
-                        .HasForeignKey("EventUnion.Domain.Users.Person", "Id")
+                        .HasForeignKey("EventUnion.Domain.Users.Person", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_person_user_id");
+                        .HasConstraintName("fk_person_user_user_id");
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.FullName", "Name", b1 =>
                         {
-                            b1.Property<Guid>("PersonId")
+                            b1.Property<Guid>("PersonUserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -927,39 +927,39 @@ namespace EventUnion.Infrastructure.Migrations
                                 .HasColumnType("character varying(256)")
                                 .HasColumnName("name");
 
-                            b1.HasKey("PersonId");
+                            b1.HasKey("PersonUserId");
 
                             b1.ToTable("person");
 
                             b1.WithOwner()
-                                .HasForeignKey("PersonId")
-                                .HasConstraintName("fk_person_person_id");
+                                .HasForeignKey("PersonUserId")
+                                .HasConstraintName("fk_person_person_user_id");
                         });
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.Birthdate", "Birthdate", b1 =>
                         {
-                            b1.Property<Guid>("PersonId")
+                            b1.Property<Guid>("PersonUserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<DateTime>("Value")
                                 .HasColumnType("timestamp without time zone")
                                 .HasColumnName("birthdate");
 
-                            b1.HasKey("PersonId");
+                            b1.HasKey("PersonUserId");
 
                             b1.ToTable("person");
 
                             b1.WithOwner()
-                                .HasForeignKey("PersonId")
-                                .HasConstraintName("fk_person_person_id");
+                                .HasForeignKey("PersonUserId")
+                                .HasConstraintName("fk_person_person_user_id");
                         });
 
                     b.OwnsOne("EventUnion.Domain.ValueObjects.Cpf", "Cpf", b1 =>
                         {
-                            b1.Property<Guid>("PersonId")
+                            b1.Property<Guid>("PersonUserId")
                                 .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnName("user_id");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
@@ -967,13 +967,13 @@ namespace EventUnion.Infrastructure.Migrations
                                 .HasColumnType("character varying(11)")
                                 .HasColumnName("cpf");
 
-                            b1.HasKey("PersonId");
+                            b1.HasKey("PersonUserId");
 
                             b1.ToTable("person");
 
                             b1.WithOwner()
-                                .HasForeignKey("PersonId")
-                                .HasConstraintName("fk_person_person_id");
+                                .HasForeignKey("PersonUserId")
+                                .HasConstraintName("fk_person_person_user_id");
                         });
 
                     b.Navigation("Birthdate")
