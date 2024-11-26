@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using EventUnion.Api.Features.Common;
 using EventUnion.CommonResources;
+using EventUnion.Domain.Addresses;
 using EventUnion.Domain.Common.Interfaces;
 using EventUnion.Domain.Events;
 using EventUnion.Domain.Users;
@@ -30,6 +31,7 @@ public static class AddCompany
         public string? TradeName { get; set; }
         public string? Cnpj { get; set; }
         public string? Specialization { get; set; }
+        public string? Phone { get; set; }
         public List<string>? Tags { get; set; }
 
         // ReSharper disable once ClassNeverInstantiated.Global
@@ -62,6 +64,10 @@ public static class AddCompany
             RuleFor(x => x.Specialization)
                 .NotEmptyWithError();
 
+            RuleFor(x => x.Phone)
+                .NotEmptyWithError()
+                .MustBeValueObject(phoneNumber => PhoneNumber.Create(phoneNumber!));
+            
             RuleFor(x => x.Tags)
                 .NotNullWithError()
                 .Must(tags => tags!.Count > 0).WithMessage("A lista de tags não pode estar vazia.");
@@ -92,7 +98,7 @@ public static class AddCompany
             var commandSave = new Command(
                 FullName.Create(req.LegalName!).Value, FullName.Create(req.TradeName!).Value, 
                 Cnpj.Create(req.Cnpj!).Value, req.Specialization,
-                req.Tags, Email.Create(req.User?.Email!).Value, req.User?.Password);
+                req.Tags, Email.Create(req.User?.Email!).Value, PhoneNumber.Create(req.Phone!).Value, req.User?.Password);
             
             return await sender.Send(commandSave, ct);
         }
@@ -102,7 +108,7 @@ public static class AddCompany
     #region Handler
     public record Command(
         FullName? LegalName, FullName? TradeName, Cnpj? Cnpj, string? Specialization,
-        List<string>? Tags, Email? Email, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
+        List<string>? Tags, Email? Email, PhoneNumber? Phone, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
     
     internal class Handler(
         IUnitOfWork unitOfWork,
@@ -127,6 +133,10 @@ public static class AddCompany
                 if (tag is not null)
                     await unitOfWork.AddAsync(new UserTag(tag, company), ct);
             }
+            
+            var phone = new Phone(company,
+                request.Phone!.Value);
+            await unitOfWork.AddAsync(phone, ct);
             
             var result = await unitOfWork.SaveChangesAsync(ct);
             if (result.IsFailure)

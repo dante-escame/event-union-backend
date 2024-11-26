@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using EventUnion.Api.Features.Common;
 using EventUnion.CommonResources;
+using EventUnion.Domain.Addresses;
 using EventUnion.Domain.Common.Interfaces;
 using EventUnion.Domain.Events;
 using EventUnion.Domain.Users;
@@ -29,6 +30,7 @@ public static class AddPerson
         public string? Name { get; set; }
         public string? Cpf { get; set; }
         public DateTime Birthdate { get; set; }
+        public string? Phone { get; set; }
         public List<string>? Tags { get; set; }
 
         public record UserPayload
@@ -61,6 +63,10 @@ public static class AddPerson
                 .NotEmptyWithError()
                 .MustBeValueObject(cpf => Cpf.Create(cpf!));
             
+            RuleFor(x => x.Phone)
+                .NotEmptyWithError()
+                .MustBeValueObject(phoneNumber => PhoneNumber.Create(phoneNumber!));
+            
             RuleFor(x => x.Tags)
                 .NotNullWithError()
                 .Must(tags => tags!.Count > 0).WithMessage("Selecione ao menos um interesse.");
@@ -91,7 +97,7 @@ public static class AddPerson
         {
             var commandSave = new Command(
                 FullName.Create(req.Name!).Value, Cpf.Create(req.Cpf!).Value, Birthdate.Create(req.Birthdate).Value, 
-                req.Tags, Email.Create(req.User?.Email!).Value, req.User?.Password);
+                req.Tags, Email.Create(req.User?.Email!).Value, PhoneNumber.Create(req.Phone!).Value, req.User?.Password);
             
             return await sender.Send(commandSave, ct);
         }
@@ -101,7 +107,7 @@ public static class AddPerson
     #region Handler
     public record Command(
         FullName? Name, Cpf? Cpf, Birthdate? BirthDate, List<string>? Tags,
-        Email? Email, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
+        Email? Email, PhoneNumber? Phone, string? Password) : IRequest<Result<ResourceLocator<Guid>, Error>>;
     
     // ReSharper disable once UnusedType.Global
     internal class Handler(
@@ -127,6 +133,10 @@ public static class AddPerson
                 if (tag is not null)
                     await unitOfWork.AddAsync(new UserTag(tag, person), ct);
             }
+            
+            var phone = new Phone(person,
+                request.Phone!.Value);
+            await unitOfWork.AddAsync(phone, ct);
             
             var result = await unitOfWork.SaveChangesAsync(ct);
             if (result.IsFailure)

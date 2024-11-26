@@ -36,4 +36,9 @@
 	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Remove="Migrations\20241118215947_InitIdentityAggregate.cs" />
+	  <Compile Remove="Migrations\20241118215947_InitIdentityAggregate.Designer.cs" />
+	</ItemGroup>
+
 </Project>
