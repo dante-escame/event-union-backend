@@ -25,6 +25,7 @@ public static class GetPersonById
         public override void Configure()
         {
             Get("api/people/{UserId}");
+            AllowAnonymous();
         }
         
         public override async Task<Result<Response, Error>> ExecuteAsync(Request req, CancellationToken ct)

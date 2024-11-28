@@ -108,6 +108,7 @@ public static class AddEvent
         public override void Configure()
         {
             Post("api/events");
+            AllowAnonymous();
         }
         
         public override async Task<Result<ResourceLocator<Response>, Error>> ExecuteAsync(Request req, CancellationToken ct)

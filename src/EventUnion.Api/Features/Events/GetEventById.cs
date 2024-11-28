@@ -48,7 +48,7 @@ public static class GetEventById
                 const string sql = 
                     """
                         SELECT
-                            e.user_owner_id AS UserOwnerId,
+                            e.user_owner_user_id AS UserOwnerId,
                             e.image AS Image,
                             e.name AS Name,
                             e.description AS Description,

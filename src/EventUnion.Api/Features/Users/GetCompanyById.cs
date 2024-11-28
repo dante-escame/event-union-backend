@@ -25,6 +25,7 @@ public static class GetCompanyById
         public override void Configure()
         {
             Get("api/companies/{UserId}");
+            AllowAnonymous();
         }
 
         public override async Task<Result<Response, Error>> ExecuteAsync(Request req, CancellationToken ct)

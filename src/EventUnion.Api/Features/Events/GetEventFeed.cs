@@ -20,7 +20,7 @@ public static class GetEventFeed
     {
         public override void Configure()
         {
-            Get("api/events/users/UserId");
+            Get("api/events/users/{UserId}");
             AllowAnonymous();
         }
         
@@ -43,21 +43,6 @@ public static class GetEventFeed
             {
                 using var connection = dbConnectionFactory.CreateOpenConnection();
                 
-                /*const string recommendedEventSql = 
-                    """
-                        SELECT
-                            e.event_id AS EventId,
-                            e.image AS Image,
-                            e.name AS Name,
-                            e.start_date AS StartDate,
-                            e.end_date AS EndDate,
-                            e.private AS Private
-                        FROM event e
-                            JOIN "event_user" eu on eu.event_id = e.event_id
-                            JOIN "user" u on u.user_id = eu.user_id
-                        WHERE u.user_id = @userId
-                    """;*/
-                
                 const string nextEventsSql = 
                     """
                         SELECT
@@ -75,10 +60,12 @@ public static class GetEventFeed
 
                 var nextEvents = await connection
                     .QueryAsync<Response.Event>(nextEventsSql, new { request.UserId });
-                
+
+                var list = nextEvents.ToList();
                 var response = new Response
                 {
-                    Collection = nextEvents.ToList()
+                    Collection = list.ToList(),
+                    Index = list.Count
                 };
 
                 return response;
@@ -91,6 +78,7 @@ public static class GetEventFeed
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public required List<Event> Collection { get; set; } = [];
+        public required int Index { get; set; }
         public record Event
         {
             public required Guid EventId { get; init; }
